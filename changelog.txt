@@ -1,0 +1,7 @@
+0.0.2
+  - Made pip installable module and utility
+  - Reworkd GUI
+  - Tightened Regular Expressions (covering things like CRYPTXXXX)
+
+0.0.1
+  - Initial version, mix and match

@@ -2,7 +2,7 @@
 # -*- coding: utf-8; py-indent-offset:4 -*-
 ###############################################################################
 #
-#  Copyright (C) 2014 Daniel Rodriguez
+#  Copyright (C) 2016 Daniel Rodriguez
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -22,13 +22,25 @@ from utils.mvc import PubRecv
 import wx
 
 if True:
-    @PubRecv('model.executed')
-    def On_ModelNextMotd(self, msg):
-        oldcrc, newcrc = msg
+    @PubRecv('model.loaded')
+    def On_ModelLoaded(self, msg):
+        ret, error = msg
 
-        if oldcrc is None:
-            wx.MessageBox(str(e), 'An error happened')
+        if not ret:
+            wx.MessageBox(str(error), 'An error happened')
             return
 
-        txt = 'OldCRC: {} - NewCRC: {}'.format(oldcrc, newcrc)
-        wx.MessageBox(txt, 'CRC Calculation completed')
+        self.crcold.value = self.model.crcold
+        self.crcnew.value = self.model.crcnew
+
+
+if True:
+    @PubRecv('model.saved')
+    def On_ModelSaved(self, msg):
+        ret, error = msg
+
+        if not ret:
+            wx.MessageBox(str(error), 'An error happened!')
+            return
+
+        wx.MessageBox('File saved!', 'File Saved!')

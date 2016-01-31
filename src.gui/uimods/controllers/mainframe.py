@@ -2,7 +2,7 @@
 # -*- coding: utf-8; py-indent-offset:4 -*-
 ###############################################################################
 #
-#  Copyright (C) 2014 Daniel Rodriguez
+#  Copyright (C) 2016 Daniel Rodriguez
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -18,38 +18,71 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
+import os.path
+
+import wx
+
 from uimods.aboutdialog import AboutDialog
 from utils.mvc import DynBind, PubRecv
 import utils.wxfb as wxfb
-import wx
 
 import models.mainmodel as mainmodel
 
 if True:
     def __init__(self, parent):
-        # maingui.MainFrame.__init__(self, parent)
-
         wxfb.BindingFilePicker('fileread')
-        wxfb.BindingFilePicker('filewrite')
+        wxfb.BindingCheckBox('loadlast', default=True)
 
-        wxfb.BindingButton('execute')
+        wxfb.BindingButton('recalculate')
+        wxfb.BindingButton('save')
+        wxfb.BindingButton('saveas')
+
+        wxfb.BindingTextCtrl('crcold', config=False)
+        wxfb.BindingTextCtrl('crcnew', config=False)
+
         self.model = mainmodel.MainModel()
+        if self.loadlast.value:
+            self.model.load(self.fileread.path)
 
 if True:
-    @PubRecv('evt_button.execute')
-    def OnButtonExecute(self, msg):
-        pread = self.fileread.path
-        pwrite = self.filewrite.path
+    @PubRecv('evt_filepicker_changed.fileread')
+    def OnFilePickerChanged(self, msg):
+        self.model.load(self.fileread.path)
 
-        if not pread:
-            wx.MessageBox('No file to read', 'Error')
+if True:
+    @PubRecv('evt_button.recalculate')
+    def OnButtonRecalculate(self, msg):
+        self.model.load(self.fileread.path)
+
+if True:
+    @PubRecv('evt_button.save')
+    def OnButtonSave(self, msg):
+        if not self.model.status:
+            wx.MessageBox('No export file has been successfully loaded yet!')
             return
 
-        if not pwrite:
-            wx.MessageBox('No file to write', 'Error')
+        ret = wx.MessageBox('Overwrite the original file?', 'Attention!',
+                            wx.YES_NO | wx.ICON_QUESTION)
+
+        if ret == wx.YES:
+            self.model.save(self.fileread.path)
+
+if True:
+    @PubRecv('evt_button.saveas')
+    def OnButtonSaveAs(self, msg):
+        if not self.model.status:
+            wx.MessageBox('No export file has been successfully loaded yet!')
             return
 
-        self.model.execute(pread, pwrite)
+        dialog = wx.FileDialog(
+            self, 'Save As ...', style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+
+        result = dialog.ShowModal()
+        if result != wx.ID_OK:
+            return
+
+        # Show filedialog and get value
+        self.model.save(dialog.GetPath())
 
 if True:
     @DynBind.EVT_BUTTON.Button.AboutDialog

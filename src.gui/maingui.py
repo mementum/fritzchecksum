@@ -26,43 +26,59 @@ class MainFrame ( wx.Frame ):
 		self.m_panel1 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer2 = wx.BoxSizer( wx.VERTICAL )
 		
-		bSizer14 = wx.BoxSizer( wx.HORIZONTAL )
+		self.m_filePickerFileRead = wx.FilePickerCtrl( self.m_panel1, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*", wx.DefaultPosition, wx.Size( -1,-1 ), wx.FLP_DEFAULT_STYLE|wx.FLP_FILE_MUST_EXIST|wx.FLP_OPEN )
+		bSizer2.Add( self.m_filePickerFileRead, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.EXPAND, 5 )
 		
-		self.m_staticText7 = wx.StaticText( self.m_panel1, wx.ID_ANY, u"File to Read", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText7.Wrap( -1 )
-		bSizer14.Add( self.m_staticText7, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-		
-		self.m_filePickerFileRead = wx.FilePickerCtrl( self.m_panel1, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*", wx.DefaultPosition, wx.Size( 500,-1 ), wx.FLP_DEFAULT_STYLE|wx.FLP_FILE_MUST_EXIST|wx.FLP_OPEN )
-		bSizer14.Add( self.m_filePickerFileRead, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-		
-		
-		bSizer2.Add( bSizer14, 0, 0, 5 )
-		
-		bSizer141 = wx.BoxSizer( wx.HORIZONTAL )
-		
-		self.m_staticText71 = wx.StaticText( self.m_panel1, wx.ID_ANY, u"File to Save", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText71.Wrap( -1 )
-		bSizer141.Add( self.m_staticText71, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-		
-		self.m_filePickerFileWrite = wx.FilePickerCtrl( self.m_panel1, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_OVERWRITE_PROMPT|wx.FLP_SAVE|wx.FLP_USE_TEXTCTRL )
-		bSizer141.Add( self.m_filePickerFileWrite, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-		
-		
-		bSizer2.Add( bSizer141, 0, wx.EXPAND, 5 )
+		self.m_checkBoxLoadLast = wx.CheckBox( self.m_panel1, wx.ID_ANY, u"Load last file on start", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer2.Add( self.m_checkBoxLoadLast, 0, wx.ALL, 5 )
 		
 		self.m_staticline7 = wx.StaticLine( self.m_panel1, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-		bSizer2.Add( self.m_staticline7, 0, wx.EXPAND |wx.ALL, 5 )
+		bSizer2.Add( self.m_staticline7, 0, wx.ALL|wx.EXPAND, 5 )
+		
+		bSizer9 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.m_staticText5 = wx.StaticText( self.m_panel1, wx.ID_ANY, u"CRC in File", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText5.Wrap( -1 )
+		bSizer9.Add( self.m_staticText5, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_textCtrlCRCOld = wx.TextCtrl( self.m_panel1, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		bSizer9.Add( self.m_textCtrlCRCOld, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_staticText6 = wx.StaticText( self.m_panel1, wx.ID_ANY, u"Calculated CRC", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText6.Wrap( -1 )
+		bSizer9.Add( self.m_staticText6, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		self.m_textCtrlCRCNew = wx.TextCtrl( self.m_panel1, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		bSizer9.Add( self.m_textCtrlCRCNew, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		
+		bSizer2.Add( bSizer9, 0, wx.EXPAND, 5 )
+		
+		self.m_staticline71 = wx.StaticLine( self.m_panel1, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer2.Add( self.m_staticline71, 0, wx.EXPAND |wx.ALL, 5 )
 		
 		bSizer18 = wx.BoxSizer( wx.HORIZONTAL )
 		
-		self.m_buttonExecute = wx.Button( self.m_panel1, wx.ID_ANY, u"Execute", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer18.Add( self.m_buttonExecute, 0, wx.ALL, 5 )
+		self.m_buttonReCalculate = wx.Button( self.m_panel1, wx.ID_ANY, u"&Re-Calculate", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer18.Add( self.m_buttonReCalculate, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		
+		
+		bSizer18.AddSpacer( ( 0, 0), 1, wx.EXPAND, 5 )
+		
+		self.m_buttonSave = wx.Button( self.m_panel1, wx.ID_ANY, u"&Save", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer18.Add( self.m_buttonSave, 0, wx.ALL, 5 )
+		
+		self.m_buttonSaveAs = wx.Button( self.m_panel1, wx.ID_ANY, u"Save &As ...", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer18.Add( self.m_buttonSaveAs, 0, wx.ALL, 5 )
+		
+		
+		bSizer18.AddSpacer( ( 0, 0), 1, wx.EXPAND, 5 )
 		
 		self.m_buttonAboutDialog = wx.Button( self.m_panel1, wx.ID_ANY, u"About ...", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer18.Add( self.m_buttonAboutDialog, 0, wx.ALL, 5 )
 		
 		
-		bSizer2.Add( bSizer18, 1, wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		bSizer2.Add( bSizer18, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.EXPAND, 5 )
 		
 		
 		self.m_panel1.SetSizer( bSizer2 )

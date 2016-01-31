@@ -21,12 +21,30 @@
 from utils.mvc import DynamicClass, PubSend
 
 
-from .exportsum import calc_crc32
+import fritzchecksum
 
 
 @DynamicClass(moddirs=['modules'])
 class MainModel(object):
+    def __init__(self):
+        self.export = fritzchecksum.ExportFile()
 
-    @PubSend('model.executed')
-    def execute(self, pread, pwrite):
-        return calc_crc32(pread, pwrite)
+    @PubSend('model.loaded')
+    def load(self, path):
+        return self.export.load(path)
+
+    @PubSend('model.saved')
+    def save(self, path):
+        return self.export.save(path)
+
+    @property
+    def crcold(self):
+        return self.export.oldcrc
+
+    @property
+    def crcnew(self):
+        return self.export.newcrc
+
+    @property
+    def status(self):
+        return self.export.status

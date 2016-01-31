@@ -2,7 +2,7 @@
 # -*- coding: utf-8; py-indent-offset:4 -*-
 ###############################################################################
 #
-#  Copyright (C) 2014 Daniel Rodriguez
+#  Copyright (C) 2016 Daniel Rodriguez
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -32,6 +32,6 @@ import utils.wxfb as wxfb
 # @WidgetBindings
 @DynamicClass(moddirs=['views', 'controllers'])
 class MainFrame(maingui.MainFrame):
-    wxfb.BindingBool('otherstatus', config=False)
+    pass
 
     # With tuple in the name we can define a "config" path for the variable

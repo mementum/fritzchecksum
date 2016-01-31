@@ -2,7 +2,7 @@
 # -*- coding: utf-8; py-indent-offset:4 -*-
 ###############################################################################
 #
-#  Copyright (C) 2014 Daniel Rodriguez
+#  Copyright (C) 2016 Daniel Rodriguez
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ AppYear = '2016'
 AppExeType = 'onefile'  # 'onedir' or 'onefile'
 
 AppTitle = AppName
-AppVersion = '0.0.1'
+AppVersion = '0.0.2'
 AppSingleInstance = True
 AppUACAdmin = False
 AppUACUiAccess = False

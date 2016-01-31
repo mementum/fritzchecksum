@@ -26,7 +26,9 @@ import utils.admin
 import utils.artprovider
 import utils.systemmenu
 import sys
+import win32gui
 import wx
+
 
 class MainApp(wx.App):
     def OnInit(self):
@@ -94,10 +96,11 @@ class MainApp(wx.App):
 
         # Set the top window - no longer needed in recent wxPython versions
         # self.SetTopWindow(self.view)
-        self.view.Show(True)
-        self.view.Raise()
+        # self.view.SetFocus()
         self.view.SetMinSize(self.view.GetSizer().GetMinSize())
         self.view.Fit()
+        self.view.Show()
+        self.view.Raise()
 
         return True
 
