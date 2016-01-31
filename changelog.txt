@@ -1,3 +1,7 @@
+0.0.3
+  - Correct README rst syntax (*args -> \*args)
+  - Avoid error on loading if empty file selection
+
 0.0.2
   - Made pip installable module and utility
   - Reworkd GUI

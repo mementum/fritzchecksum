@@ -41,8 +41,9 @@ if True:
         wxfb.BindingTextCtrl('crcnew', config=False)
 
         self.model = mainmodel.MainModel()
-        if self.loadlast.value:
-            self.model.load(self.fileread.path)
+        if self.loadlast.value and self.fileread.path:
+            if os.path.isfile(self.fileread.path):
+                self.model.load(self.fileread.path)
 
 if True:
     @PubRecv('evt_filepicker_changed.fileread')

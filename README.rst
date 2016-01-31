@@ -73,8 +73,8 @@ The module contains two Python 1st class citizens:
       - fin: a file-like
       - fout: None or a file-like object. If a file, then the input will be
         written to the output with the new calculated CRC
-      - logcb (default: log_null -> empty stub
-        a logger which must a accepts *args (print will work)
+      - logcb (default: ``log_null`` which is an empty stub)
+        a logger which must a accepts \*args (print will work)
 
     Returns:
 

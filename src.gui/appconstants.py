@@ -31,7 +31,7 @@ AppYear = '2016'
 AppExeType = 'onefile'  # 'onedir' or 'onefile'
 
 AppTitle = AppName
-AppVersion = '0.0.2'
+AppVersion = '0.0.3'
 AppSingleInstance = True
 AppUACAdmin = False
 AppUACUiAccess = False
