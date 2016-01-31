@@ -118,7 +118,7 @@ The module contains two Python 1st class citizens:
           the CRC calculation
 
 
-  - class *ExporFile*
+  - class *ExportFile*
 
     Class to encapsulate the parsing of an export file and overwriting of
     the CRC value
