@@ -30,21 +30,7 @@ import models.mainmodel as mainmodel
 
 if True:
     def __init__(self, parent):
-        wxfb.BindingFilePicker('fileread')
-        wxfb.BindingCheckBox('loadlast', default=True)
-
-        wxfb.BindingButton('recalculate')
-        wxfb.BindingButton('save')
-        wxfb.BindingButton('saveas')
-
-        wxfb.BindingTextCtrl('crcold', config=False)
-        wxfb.BindingTextCtrl('crcnew', config=False)
-
-        self.model = mainmodel.MainModel()
-        if self.loadlast.value and self.fileread.path:
-            if os.path.isfile(self.fileread.path):
-                self.model.load(self.fileread.path)
-
+        pass
 if True:
     @PubRecv('evt_filepicker_changed.fileread')
     def OnFilePickerChanged(self, msg):

@@ -26,7 +26,6 @@ import utils.admin
 import utils.artprovider
 import utils.systemmenu
 import sys
-import win32gui
 import wx
 
 
@@ -85,22 +84,20 @@ class MainApp(wx.App):
 
         # Create the frame
         self.view = mainframe.MainFrame(parent=None)
-        if False:
-            if not appconstants.appisfrozen():
-                # Add system menuentry
-                if not utils.systemmenu.AddSystemReloadMenu(self.view):
-                    wx.MessageBox('Could not install system menu', 'Error')
+        if not appconstants.appisfrozen():
+            # Add system menuentry
+            if False and not utils.systemmenu.AddSystemReloadMenu(self.view):
+                wx.MessageBox('Could not install system menu', 'Error')
 
         title = appconstants.AppTitle + ' - ' + appconstants.AppVersion
         self.view.SetTitle(title)
 
         # Set the top window - no longer needed in recent wxPython versions
         # self.SetTopWindow(self.view)
-        # self.view.SetFocus()
+        self.view.Show(True)
+        self.view.Raise()
         self.view.SetMinSize(self.view.GetSizer().GetMinSize())
         self.view.Fit()
-        self.view.Show()
-        self.view.Raise()
 
         return True
 
