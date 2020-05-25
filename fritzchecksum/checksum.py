@@ -278,14 +278,14 @@ def calc_crc32(fin, fout=None, logcb=log_null):
                 # root variable definition seen, add to crc
                 # a=b -> a + b + '\0'
                 tocrc = m.group(1) + m.group(2) + NULLCHAR
-                crc = binascii.crc32(tocrc, crc) & 0xffffffff
+                crc = crcize(tocrc, crc)
                 continue
 
             m = RE_BINFILE.match(l)
             if m:
                 status = ST_BINFILE  # start of binfile
                 tocrc = m.group(1) + NULLCHAR  # add to crc with null term
-                crc = binascii.crc32(tocrc, crc) & 0xffffffff
+                crc = crcize(tocrc, crc)
                 continue
 
             m = RE_CFGFILE.match(l)
@@ -294,7 +294,7 @@ def calc_crc32(fin, fout=None, logcb=log_null):
                 status = ST_CFGFILE  # start of cfgfile, change status
                 last_l = None  # initialize single line buffer
                 tocrc = m.group(1) + NULLCHAR  # add to crc with null term
-                crc = binascii.crc32(tocrc, crc) & 0xffffffff
+                crc = crcize(tocrc, crc)
                 continue
 
         elif status == ST_BINFILE:
@@ -307,7 +307,8 @@ def calc_crc32(fin, fout=None, logcb=log_null):
             # else ... binary hex line - convert skipping eol
             logcb('BINFILE: processing line')
             hexed = binascii.unhexlify(l[:-1])  # convert to binary anc crc
-            crc = binascii.crc32(hexed, crc) & 0xffffffff
+            crc = crcize(hexed, crc)
+            continue
             continue
 
         elif status == ST_CFGFILE:
@@ -326,7 +327,7 @@ def calc_crc32(fin, fout=None, logcb=log_null):
             # crc existing buffered line
             logcb('CFGFILE: processing line')
             if last_l is not None:  # do only operate on something
-                crc = binascii.crc32(last_l, crc) & 0xffffffff
+                crc = crcize(last_l, crc)
 
             last_l = l  # buffer the line just seen
             continue
