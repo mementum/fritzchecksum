@@ -21,6 +21,7 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
+import base64
 import binascii
 import io
 import re
@@ -203,6 +204,12 @@ def calc_crc32(fin, fout=None, logcb=log_null):
         The name (null terminated) of the subsection contributes to the CRC
         calculation
 
+        - XXXBASE64FILE Section
+
+          Lines represent base64 encoded values. The values (binary converted)
+          are used directly in the calculation of the CRC (stripping eol
+          before)
+
         - XXXBINFILE Section
 
           Lines represent hexadecimal values. The values (binary converted)
@@ -224,11 +231,12 @@ def calc_crc32(fin, fout=None, logcb=log_null):
     RE_ENDROOT = re.compile(r'^\*+\s+END OF EXPORT\s+(\w+)\s+\*+.*')
     RE_DEFROOT = re.compile(r'^(\w+)\s*=\s*([\$\.\w]+)\s*.*')  # root var def
     RE_BINFILE = re.compile(r'^\*+\s+\w*BINFILE:\s*([\w\.]+)\s*.*')
+    RE_B64FILE = re.compile(r'^\*+\s+\w*B64FILE:\s*([\w\.]+)\s*.*')
     RE_CFGFILE = re.compile(r'^\*+\s+CFGFILE:\s*([\w\.]+)\s*.*')
     RE_ENDFILE = re.compile(r'^\*+\s+END OF FILE\s+\*+.*')  # for all files
 
     # Statuses for the simple finite state machine
-    ST_NONE, ST_ROOT, ST_CFGFILE, ST_BINFILE = range(4)
+    ST_NONE, ST_ROOT, ST_CFGFILE, ST_BINFILE, ST_B64FILE = range(5)
 
     status = ST_NONE
     crc = 0
@@ -288,6 +296,13 @@ def calc_crc32(fin, fout=None, logcb=log_null):
                 crc = crcize(tocrc, crc)
                 continue
 
+            m = RE_B64FILE.match(l)
+            if m:
+                status = ST_B64FILE  # start of binfile
+                tocrc = m.group(1) + NULLCHAR  # add to crc with null term
+                crc = crcize(tocrc, crc)
+                continue
+
             m = RE_CFGFILE.match(l)
             if m:
                 logcb('CFGFILE: {}'.format(m.group(1)))
@@ -309,6 +324,18 @@ def calc_crc32(fin, fout=None, logcb=log_null):
             hexed = binascii.unhexlify(l[:-1])  # convert to binary anc crc
             crc = crcize(hexed, crc)
             continue
+
+        elif status == ST_B64FILE:
+            m = RE_ENDFILE.match(l)
+            if m:
+                logcb('END B64FILE')
+                status = ST_ROOT  # go back to root level
+                continue
+
+            # else ... binary hex line - convert skipping eol
+            logcb('B64FILE: processing line')
+            b64ed = base64.b64decode(l[:-1])  # convert to binary anc crc
+            crc = crcize(b64ed, crc)
             continue
 
         elif status == ST_CFGFILE:
