@@ -148,6 +148,21 @@ def log_null(*args, **kwargs):
     pass
 
 
+def crcize(tocrc, crc):
+    '''
+    Helper method which updates the passed value and takes care of converting
+    the input to bytes
+    '''
+
+    try:
+        tocrc = tocrc.encode('utf-8')
+    except AttributeError:
+        pass  # no encode support, *must* be bytes
+
+    return binascii.crc32(tocrc, crc) & 0xffffffff
+
+
+
 def calc_crc32(fin, fout=None, logcb=log_null):
     '''Calculates the CRC of a Fritz!Box configuration export file and writes
     the new CRC sum to a new configuration file
