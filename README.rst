@@ -1,6 +1,14 @@
 fritzchecksum
 =============
 
+Update 0.0.4
+------------
+
+Support for the new XXXXB64FILE sections in Firmware Versions > 7.12
+
+Introduction
+------------
+
 Small pip installable module and Windows GUI (32 & 64 bits) to calculate the
 CRC of an AVM's Fritz!Box configuration file.
 
