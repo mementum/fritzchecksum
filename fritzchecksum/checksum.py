@@ -319,10 +319,9 @@ def calc_crc32(fin, fout=None, logcb=log_null):
             if m:
                 logcb('END CFGFILE')
                 if last_l is not None:  # only operate if on something
-                    crc = binascii.crc32(last_l[:-1], crc) & 0xffffffff
+                    last_l = last_l[:-1]
 
                 status = ST_ROOT  # back to root level
-                continue
 
             # crc existing buffered line
             logcb('CFGFILE: processing line')
